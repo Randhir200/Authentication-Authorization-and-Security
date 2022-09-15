@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'enter password'],
     minLength: 4,
+    select:false
   },
   passwordConfirm: {
     type: String,
@@ -30,6 +31,11 @@ const userSchema = new mongoose.Schema({
     },
   },
 });
+
+// make a instance here to .compare password between candidate(normal) password with userPassword(dcrypt) password
+userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
+  return bcrypt.compare(candidatePassword, userPassword)
+}
 
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();

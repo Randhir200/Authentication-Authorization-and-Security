@@ -2,12 +2,15 @@ const express = require('express');
 require('dotenv').config();
 const connection = require('./config/db');
 const app = express();
-const userRoute = require('./routes/userRoutes');
-const route = require('./routes/tourRoutes');
+const masterRoute = require('./routes/masterRoute');
 
 app.use(express.json());
-app.use('/users', userRoute);
-app.use('/tours', route);
+app.use('/dummy', (req, res)=>{
+    res.send('Respons Get Back');
+})
+app.use('/', masterRoute);
+
+
 
 const port = process.env.PORT || 7000;
 app.listen(port, async () => {

@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
-require('dotenv').config();
-const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.PASSWORD)
+const DB = process.env.DB_URL.replace('<username>', process.env.DB_USER)
+          .replace('<password>', process.env.DB_PASS);
 
-// const DB = process.env.DATABASE_LOCAL;
 const connection = async () => {
-  await mongoose.connect(DB);
+  try{
+    await mongoose.connect(DB);
+  }catch(err){
+    throw err;
+  }
 };
 
 module.exports = connection;

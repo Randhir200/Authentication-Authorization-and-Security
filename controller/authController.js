@@ -13,6 +13,7 @@ exports.signup = async (req, res, next) => {
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
   });
+
   const token = signToken(newUser._id);
   await newUser.save();
 
@@ -28,17 +29,16 @@ exports.signup = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   const { email, password } = req.body;
-
   //1.check email or password is exist
   if (!email || !password) {
     res.send('Please provide your email and password');
   }
-
+  
   //2. check if user exist && password is correct
   const user = await User.findOne({ email }).select('+password');
-  if (!user || (await user.correctPassword(password, user.password))) {
+  if (!user || !(await user.correctPassword(password, user.password))) {
     res
-      .status(401)
+      .status('401')
       .json({ status: 'failed', message: 'Invalid username or password' });
   }
 

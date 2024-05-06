@@ -26,8 +26,10 @@ app.get("/health", async (req, res) => {
     logger.info(`mongoDb connection: up, ${mongoState}`);
     res.status(200).json({ status: "up", dbState: mongoState });
   } else {
+    const DB = process.env.DB_URL.replace('<username>', process.env.DB_USER)
+          .replace('<password>', process.env.DB_PASS);
     logger.info(`mongoDb connection: down, ${mongoState}`);
-    res.status(500).json({ status: "down", dbState: mongoState, PORT: process.env.PORT });
+    res.status(500).json({ status: "down", dbState: mongoState, PORT: DB });
   }
 });
 

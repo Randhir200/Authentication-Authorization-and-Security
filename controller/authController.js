@@ -15,14 +15,19 @@ exports.signup = async (req, res, next) => {
   });
 
   const token = signToken(newUser._id);
-  await newUser.save();
-
-  res.status(201).json({
-    token,
-    status: 'success',
-    data: newUser,
-  });
-  res.send();
+  try{
+    await newUser.save();
+   return res.status(201).json({
+      token,
+      status: 'success',
+      data: newUser,
+    });
+  }catch(err){
+  res.status(500).json({
+    status: "failed",
+    message: err
+  })
+  }
 };
 
 //login

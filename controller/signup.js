@@ -101,7 +101,7 @@ const registeUser = async (req, res) => {
     await newUser.save();
     const token = signToken(newUser.email);
     res.status(201).json({
-      staus: "Success",
+      status: "Success",
       message: "User saved successfully",
       user: newUser,
       token,

@@ -67,7 +67,7 @@ const login = async (req, res) => {
     }
     const token = signToken(email);
     res.status(201).json({
-      staus: "Success",
+      status: "Success",
       message: "User logged in successfully",
       token,
     });

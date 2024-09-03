@@ -7,7 +7,6 @@ const cors = require("cors");
 const logger = require("./logger");
 const masterRoute = require("./routes/masterRoute");
 const { auth } = require("./middleware/auth");
-const cors = require('cors');
 app.use(express.json());
 app.use(cors());
 // app.use(auth);

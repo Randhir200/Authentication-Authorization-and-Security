@@ -8,16 +8,8 @@ const logger = require("./logger");
 const masterRoute = require("./routes/masterRoute");
 const { auth } = require("./middleware/auth");
 const cors = require('cors');
-app.use(cors())
 app.use(express.json());
-app.use(
-  cors({
-    origin: "",
-    methods: "GET,POST",
-    credentials: true,
-    exposedHeaders: ["auth-token"],
-  })
-);
+app.use(cors());
 // app.use(auth);
 app.use("/", masterRoute);
 

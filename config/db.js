@@ -6,7 +6,7 @@ const DB = process.env.DB_URL.replace('<username>', process.env.DB_USER)
 
 const connection = async () => {
   try{
-    await mongoose.connect(uri);
+    await mongoose.connect(DB);
   }catch(err){
     throw err;
   }

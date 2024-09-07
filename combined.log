@@ -11,3 +11,5 @@
 {"level":"info","message":"mongoDb connection: up, connected","service":"Invo Manage","timestamp":"2024-09-07 06:19:56"}
 {"level":"info","message":"mongoDb connection: up, connected","service":"Invo Manage","timestamp":"2024-09-07 06:41:21"}
 {"level":"info","message":"mongoDb connection: up, connected","service":"Invo Manage","timestamp":"2024-09-07 06:50:15"}
+{"level":"info","message":"mongoDb connection: up, connected","service":"Invo Manage","timestamp":"2024-09-07 07:00:33"}
+{"level":"info","message":"mongoDb connection: up, connected","service":"Invo Manage","timestamp":"2024-09-07 07:01:35"}

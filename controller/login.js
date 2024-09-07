@@ -52,6 +52,13 @@ const login = async (req, res) => {
       $or: [{ email }],
     });
 
+    if (!existingUser) {
+      return res.status(400).json({
+        status: "Failed",
+        error: "User with this email does not exist",
+      });
+    }
+    
     if (
       !(await existingUser.correctPassword(password, existingUser.password))
     ) {
@@ -59,12 +66,7 @@ const login = async (req, res) => {
         .status(401)
         .json({ status: "failed", message: "Invalid password" });
     }
-    if (!existingUser) {
-      return res.status(400).json({
-        status: "Failed",
-        error: "User with this email does not exist",
-      });
-    }
+   
     const token = signToken(email);
     res.status(201).json({
       status: "Success",

@@ -2,6 +2,7 @@ const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
+  mode: 'production',  
   entry: './index.js', // your main file
   target: 'node', // for Node.js apps
   externals: [nodeExternals()], // ignore node_modules
@@ -14,9 +15,6 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader', // Optional, if you're using Babel
-        },
       },
     ],
   },

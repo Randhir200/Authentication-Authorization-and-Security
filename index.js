@@ -8,9 +8,13 @@ const logger = require("./logger");
 const masterRoute = require("./routes/masterRoute");
 const { auth } = require("./middleware/auth");
 app.use(express.json());
+
 app.use(cors());
 // app.use(auth);
 app.use("/", masterRoute);
+
+// Use cookie-parser middleware
+app.use(cookieParser());
 
 app.get("/health", async (req, res) => {
   const mongoState = mongoose.STATES[mongoose.connection.readyState];

@@ -14,7 +14,6 @@ app.use("/", masterRoute);
 
 app.get("/health", async (req, res) => {
   const mongoState = mongoose.STATES[mongoose.connection.readyState];
-
   if (mongoState === "connected") {
     logger.info(`mongoDb connection: up, ${mongoState}`);
     res.status(200).json({ status: "up", dbState: mongoState });

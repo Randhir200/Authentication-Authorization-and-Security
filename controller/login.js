@@ -58,7 +58,7 @@ const login = async (req, res) => {
         error: "User with this email does not exist",
       });
     }
-    
+
     if (
       !(await existingUser.correctPassword(password, existingUser.password))
     ) {
@@ -66,15 +66,24 @@ const login = async (req, res) => {
         .status(401)
         .json({ status: "failed", message: "Invalid password" });
     }
-   
+
     const token = signToken(email);
+
+    // Set HTTP-Only Cookie
+    res.cookie('token', token, {
+      httpOnly: true,  // Accessible only by the web server
+      secure: true,    // Ensures the cookie is sent over HTTPS
+      sameSite: 'Strict', // CSRF protection
+      maxAge: 3600000  // 1 hour expiration
+    });
+
     res.status(201).json({
       status: "Success",
       message: "User logged in successfully",
       token,
     });
   } catch (err) {
-    res.status(500).json({ staus: "Failed", error: err.message });
+    res.status(500).json({ status: "Failed", error: err.message });
   }
 };
 

@@ -1,9 +1,10 @@
 const User = require("./../model/userModel");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 
 //signin token
-const signToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+const signToken = (email, _id) => {
+  return jwt.sign({email, _id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
@@ -66,16 +67,9 @@ const login = async (req, res) => {
         .status(401)
         .json({ status: "failed", message: "Invalid password" });
     }
-
-    const token = signToken(email);
-
-    // Set HTTP-Only Cookie
-    res.cookie('token', token, {
-      httpOnly: true,  // Accessible only by the web server
-      secure: true,    // Ensures the cookie is sent over HTTPS
-      sameSite: 'Strict', // CSRF protection
-      maxAge: 3600000  // 1 hour expiration
-    });
+    
+    const _id = new mongoose.Types.ObjectId(existingUser._id).toString();
+    const token = signToken(email, _id);
 
     res.status(201).json({
       status: "Success",

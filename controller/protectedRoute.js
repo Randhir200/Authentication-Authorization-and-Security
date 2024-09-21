@@ -1,25 +1,30 @@
 const jwt = require('jsonwebtoken');
 
 const protectedRoute = async (req, res) => {
-    console.log(req.cookies);
-    // Retrieve the token from the HTTP-only cookie
-    // const token = req.cookies.token;
+    // Retrieve the token from the headers
+    const authHeader = req.headers.authorization;
 
-    // // If the token is not present, respond with an unauthorized status
-    // if (!token) {
-    //     return res.status(401).json({ message: 'Unauthorized' });
-    // }
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({status: "failed", message: 'Unauthorized' });
+    }
 
-    // try {
-    //     // Verify the token using the secret key
-    //     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const token = authHeader.split(' ')[1];
 
-    //     // If verification is successful, send a success message
-    //     return res.json({ message: `Welcome ${decoded.username}` });
-    // } catch (error) {
-    //     // If there's an error (e.g., token expired or invalid), respond with unauthorized
-    //     return res.status(401).json({ message: 'Unauthorized' });
-    // }
+    // If the token is not present, respond with an unauthorized status
+    if (!token) {
+        return res.status(401).json({status: "failed", message: 'Unauthorized' });
+    }
+
+    try {
+        // Verify the token using the secret key
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        // If verification is successful, send a success message with user ID
+        return res.status(200).json({ status: "success", userId: decoded._id});
+    } catch (error) {
+        // If there's an error (e.g., token expired or invalid), respond with unauthorized
+        return res.status(401).json({status: "failed", message: 'Unauthorized' });
+    }
 };
 
 module.exports = protectedRoute;

@@ -7,14 +7,25 @@ const cors = require("cors");
 const logger = require("./logger");
 const masterRoute = require("./routes/masterRoute");
 const { auth } = require("./middleware/auth");
+
 app.use(express.json());
 
-app.use(cors());
+const allowedOrigins = ['http://localhost:5173', 'http://localhost:3000'];
+
+app.use(cors({
+    origin: function (origin, callback) {
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: 'GET,POST,PUT,DELETE',  // Allowed HTTP methods
+    credentials: true,  // Allow credentials (cookies, authorization headers)
+}));
+
 // app.use(auth);
 app.use("/", masterRoute);
-
-// Use cookie-parser middleware
-app.use(cookieParser());
 
 app.get("/health", async (req, res) => {
   const mongoState = mongoose.STATES[mongoose.connection.readyState];

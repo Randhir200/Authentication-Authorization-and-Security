@@ -1,6 +1,7 @@
 const User = require("./../model/userModel");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+const { response } = require("../utils/response");
 
 //signin token
 const signToken = (email, _id) => {
@@ -41,10 +42,7 @@ const login = async (req, res) => {
   });
 
   if (errors.length > 0) {
-    return res.status(400).json({
-      status: "Failed",
-      error: errors,
-    });
+    return response(res, 'badRequest', errors);
   }
 
   try {

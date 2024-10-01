@@ -10,18 +10,19 @@ const { auth } = require("./middleware/auth");
 
 app.use(express.json());
 
-const allowedOrigins = ['http://localhost:5173', 'http://localhost:3000'];
+const allowedOrigins = ['http://localhost:5173', 'http://localhost:3000',
+  'https://admirable-crostata-dd63f6.netlify.app'];
 
 app.use(cors({
-    origin: function (origin, callback) {
-        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    methods: 'GET,POST,PUT,PATCH, DELETE',  // Allowed HTTP methods
-    credentials: true,  // Allow credentials (cookies, authorization headers)
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: 'GET,POST,PUT,PATCH, DELETE',  // Allowed HTTP methods
+  credentials: true,  // Allow credentials (cookies, authorization headers)
 }));
 
 // app.use(auth);

@@ -1,0 +1,31 @@
+name: Deploy to Railway
+
+on:
+  push:
+    branches:
+      - main  # Trigger deployment on push to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Specify the Node.js version you need
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build  # Adjust this if your project has a different build command
+
+      - name: Deploy to Railway
+        uses: railwayapp/cli-action@v1
+        with:
+          railway_token: ${{ 19991205-7657-40a5-b43a-5c4c63b0b161 }}
+          service: cd836413-4b16-4867-812a-d6c4b2f2cb83  # Replace with your Railway service ID

@@ -9,6 +9,7 @@ const masterRoute = require("./routes/masterRoute");
 const { auth } = require("./middleware/auth");
 
 app.use(express.json());
+console.log(auth);
 
 const allowedOrigins = ['http://localhost:5173', 'http://localhost:3000',
   'https://admirable-crostata-dd63f6.netlify.app'];

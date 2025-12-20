@@ -52,30 +52,20 @@ const login = async (req, res) => {
     });
 
     if (!existingUser) {
-      return res.status(400).json({
-        status: "Failed",
-        error: "User with this email does not exist",
-      });
+      return response(res, 'badRequest', 'User with this email does not exist');
     }
 
     if (
       !(await existingUser.correctPassword(password, existingUser.password))
     ) {
-      return res
-        .status(401)
-        .json({ status: "failed", message: "Invalid password" });
+      return response(res, 'unauthorized', 'Invalid password');
     }
     
     const _id = new mongoose.Types.ObjectId(existingUser._id).toString();
     const token = signToken(email, _id);
-
-    res.status(201).json({
-      status: "Success",
-      message: "User logged in successfully",
-      token,
-    });
+    return response(res, 'created', 'User logged in successfully', { token });
   } catch (err) {
-    res.status(500).json({ status: "Failed", error: err.message });
+    return response(res, 'internalError', err.message);
   }
 };
 

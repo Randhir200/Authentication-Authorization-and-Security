@@ -1,3 +1,9 @@
 /node_modules
 .env
 .vercel
+package-lock.json
+.DS_Store
+coverage
+.vscode
+logs
+*.log

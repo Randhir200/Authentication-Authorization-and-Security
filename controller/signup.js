@@ -1,3 +1,4 @@
+const { response } = require("../utils/response");
 const User = require("./../model/userModel");
 const jwt = require("jsonwebtoken");
 
@@ -72,10 +73,7 @@ const registeUser = async (req, res) => {
   );
 
   if (errors.length > 0) {
-    return res.status(400).json({
-      status: "Failed",
-      error: errors,
-    });
+    return response(res, 'badRequest', errors);
   }
 
   try {
@@ -84,10 +82,7 @@ const registeUser = async (req, res) => {
       $or: [{ email }],
     });
     if (existingUser) {
-      return res.status(400).json({
-        status: "Failed",
-        error: "User with this email or username already exists",
-      });
+      return response(res, 'badRequest', 'User with this email or username already exists');
     }
 
     // Create a new user
@@ -107,7 +102,7 @@ const registeUser = async (req, res) => {
       token,
     });
   } catch (err) {
-    res.status(500).json({ staus: "Failed", error: err.message });
+    return response(res, 'internalError', err.message);
   }
 };
 

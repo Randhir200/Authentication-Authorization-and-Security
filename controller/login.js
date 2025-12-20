@@ -63,7 +63,7 @@ const login = async (req, res) => {
     
     const _id = new mongoose.Types.ObjectId(existingUser._id).toString();
     const token = signToken(email, _id);
-    return response(res, 'created', 'User logged in successfully', token );
+    return response(res, 'created', 'User logged in successfully', { token });
   } catch (err) {
     return response(res, 'internalError', err.message);
   }

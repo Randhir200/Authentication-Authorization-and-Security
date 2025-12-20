@@ -17,7 +17,7 @@ exports.response = (res, status, message, data=[])=>{
     return res.status(statusMap[status]||404).json({
         status,
         message,
-        data: data ?? undefined, // avoid sending null
+        data, // avoid sending null
         statusCode: statusMap[status]
     })
 } 

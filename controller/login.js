@@ -46,11 +46,11 @@ const login = async (req, res) => {
   }
 
   try {
-    // Check if a user with the given email already exists
+    // Check if a user with the given email exists
     const existingUser = await User.findOne({email});
 
     if (!existingUser) {
-      return response(res, 'badRequest', 'User with this email does not exist');
+      return response(res, 'badRequest', 'Invaild email!');
     }
 
     if (

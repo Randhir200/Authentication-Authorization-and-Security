@@ -9,36 +9,27 @@ const signToken = (email, _id) => {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
-
-const validateField = (filed, value, password) => {
-  switch (filed) {
+const validateField = (field, value) => {  // Remove unused password param
+  switch (field) {
     case "email":
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!value) {
-        return "Email is required.";
-      }
-      if (!emailRegex.test(value)) {
-        return "Please enter a valid email address";
-      }
+      if (!value) return "Email is required.";
+      if (!emailRegex.test(value)) return "Please enter a valid email address.";
       break;
     case "password":
-      if (!value) {
-        return "Password is required.";
-      }
+      if (!value) return "Password is required.";
+      if (value.length < 8) return "Password must be at least 8 characters.";  // Add strength check
       break;
   }
 };
+
 const login = async (req, res) => {
   const { email, password } = req.body;
-
   const errors = [];
 
-  // Validate each field
   ["email", "password"].forEach((field) => {
-    const error = validateField(field, req.body[field], password);
-    if (error) {
-      errors.push(error);
-    }
+    const error = validateField(field, req.body[field]);  // Remove password param
+    if (error) errors.push(error);
   });
 
   if (errors.length > 0) {
@@ -46,25 +37,19 @@ const login = async (req, res) => {
   }
 
   try {
-    // Check if a user with the given email exists
-    const existingUser = await User.findOne({email});
+    const existingUser = await User.findOne({ email });
 
-    if (!existingUser) {
-      return response(res, 'badRequest', 'Invaild email!');
+    // Generic error message to prevent email enumeration
+    if (!existingUser || !(await existingUser.correctPassword(password, existingUser.password))) {
+      return response(res, 'unauthorized', 'Invalid email or password');
     }
 
-    if (
-      !(await existingUser.correctPassword(password, existingUser.password))
-    ) {
-      return response(res, 'unauthorized', 'Invalid password');
-    }
-    
-    const _id = new mongoose.Types.ObjectId(existingUser._id).toString();
-    const token = signToken(email, _id);
-    return response(res, 'created', 'User logged in successfully', {token});
+    const token = signToken(email, existingUser._id.toString());  // Simplified ObjectId handling
+    return response(res, 'created', 'User logged in successfully', { token });
   } catch (err) {
     return response(res, 'internalError', err.message);
   }
+};
 };
 
 module.exports = login;

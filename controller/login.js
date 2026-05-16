@@ -45,11 +45,17 @@ const login = async (req, res) => {
     }
 
     const token = signToken(email, existingUser._id.toString());  // Simplified ObjectId handling
+    //set cookie    
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    });
+
     return response(res, 'created', 'User logged in successfully', { token });
   } catch (err) {
     return response(res, 'internalError', err.message);
   }
-};
 };
 
 module.exports = login;

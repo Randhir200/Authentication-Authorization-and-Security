@@ -17,8 +17,7 @@ const validateField = (field, value) => {  // Remove unused password param
       if (!emailRegex.test(value)) return "Please enter a valid email address.";
       break;
     case "password":
-      if (!value) return "Password is required.";
-      if (value.length < 8) return "Password must be at least 8 characters.";  // Add strength check
+      if (!value) return "Password is required."; 
       break;
   }
 };
